@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bvk4c0yl667qi"
+path="res://.godot/imported/VGMA Challenge - 09.ogg-c648add0ebcc19a7a3b3518debc5cf4f.oggvorbisstr"
+
+[deps]
+
+source_file="res://Assets/Audio/Music/VGMA Challenge - 09.ogg"
+dest_files=["res://.godot/imported/VGMA Challenge - 09.ogg-c648add0ebcc19a7a3b3518debc5cf4f.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

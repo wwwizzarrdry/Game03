@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://da1piv8t1hgko"]
+
+[ext_resource type="Texture2D" uid="uid://b6uyx4mqq6i7b" path="res://Assets/Images/Textures/Tiles/Alien Floor/19/19_diffuseOriginal.bmp" id="1_r2ke0"]
+[ext_resource type="Texture2D" uid="uid://b4shqevmbbi6l" path="res://Assets/Images/Textures/Tiles/Alien Floor/19/19_normal.bmp" id="2_8c4gk"]
+[ext_resource type="Texture2D" uid="uid://ytosy2do4am3" path="res://Assets/Images/Textures/Tiles/Alien Floor/19/19_metallic.bmp" id="3_wbe3u"]
+[ext_resource type="Texture2D" uid="uid://civ61lsglcbai" path="res://Assets/Images/Sprites/Enemies/Alien03.png" id="4_ahrt0"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_p55pp"]
+diffuse_texture = ExtResource("1_r2ke0")
+normal_texture = ExtResource("2_8c4gk")
+specular_texture = ExtResource("3_wbe3u")
+specular_color = Color(0.737255, 0.376471, 0.419608, 1)
+specular_shininess = 0.62
+texture_filter = 1
+texture_repeat = 2
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_lywbh"]
+vertices = PackedVector2Array(6061, 758, 7592, 1037, 8235, 1370, 7479, 1661, 6547, 1534, 5467, 3282, 5021, 3460, 5403, 1294, 6048, 1740, 5916, 2104, -154, 1756, -118, 62, 972, 73, 597, 2587, -154, 3481, 916, 3442, 1044, 2754, 1969, 3418, 1858, 1490, 1367, 673, 1871, 1484, 3408, 2132, 3619, 3388, 5389, 1288, 5549, 503, 6206, 3386, 6907, 2763, 7599, 3003, 6678, 3557, 8718, 1915, 8817, 3614, 8259, 3895)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(5, 6, 7, 0, 8, 9), PackedInt32Array(10, 11, 12, 13, 14), PackedInt32Array(15, 14, 13, 16), PackedInt32Array(17, 15, 16, 18), PackedInt32Array(18, 16, 19), PackedInt32Array(0, 4, 8), PackedInt32Array(20, 18, 19), PackedInt32Array(20, 19, 21, 22), PackedInt32Array(23, 22, 21, 24), PackedInt32Array(23, 24, 0, 7), PackedInt32Array(25, 5, 9, 26), PackedInt32Array(27, 28, 25, 26, 29), PackedInt32Array(27, 29, 30, 31)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-128, 52, 984, 64, 608, 2580, 1036, 2740, 1360, 656, 3408, 2120, 5548, 492, 6064, 748, 7596, 1028, 8260, 1372, 7480, 1672, 6548, 1544, 6056, 1748, 5928, 2100, 6908, 2752, 8728, 1900, 8828, 3620, 8256, 3908, 7596, 3016, 6680, 3568, 6204, 3396, 5468, 3292, 5008, 3476, 5392, 1300, 3620, 3404, 1868, 1496, 1980, 3428, 916, 3452, -164, 3492, -164, 1756)])
+source_geometry_group_name = &"navigation_polygon_source_group"
+
+[node name="Level01" type="Sprite2D"]
+scale = Vector2(0.25, 0.25)
+texture = SubResource("CanvasTexture_p55pp")
+region_enabled = true
+region_rect = Rect2(-6912, -2816, 17664, 8192)
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+position = Vector2(-8, -128)
+navigation_polygon = SubResource("NavigationPolygon_lywbh")
+
+[node name="TestNode" type="Sprite2D" parent="."]
+position = Vector2(8420, 3248)
+texture = ExtResource("4_ahrt0")

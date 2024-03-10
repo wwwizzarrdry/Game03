@@ -1,0 +1,119 @@
+[gd_scene load_steps=8 format=3 uid="uid://c6bgypvyikk1l"]
+
+[ext_resource type="Script" path="res://Scenes/main.gd" id="1_652n4"]
+[ext_resource type="Texture2D" uid="uid://blga5im05mvyx" path="res://Assets/Images/Textures/moon_light.png" id="2_kx5ak"]
+[ext_resource type="Texture2D" uid="uid://c3hkdpw351dcy" path="res://Assets/Images/Textures/Tiles/Alien Floor/22/22_diffuseOriginal.bmp" id="3_mkv58"]
+[ext_resource type="PackedScene" uid="uid://drirfxvlape7y" path="res://Scenes/Components/Enemies/Enemy_02.tscn" id="4_pxnqc"]
+[ext_resource type="PackedScene" uid="uid://de1svi7njmybm" path="res://Scenes/Components/Players/Player.tscn" id="5_w3hai"]
+
+[sub_resource type="Environment" id="Environment_c5eys"]
+background_mode = 3
+background_canvas_max_layer = 1
+tonemap_mode = 3
+tonemap_exposure = 0.5
+tonemap_white = 3.0
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+glow_enabled = true
+glow_blend_mode = 4
+glow_hdr_threshold = 0.0
+fog_light_color = Color(0.517647, 0.552941, 0.607843, 1)
+adjustment_enabled = true
+adjustment_brightness = 0.9
+adjustment_contrast = 1.1
+adjustment_saturation = 1.1
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_swsqg"]
+vertices = PackedVector2Array(-55720, 26938, -75434, -20651, -51117, -27574, 49994, 30264, -15286, 74688, 47052, -27703, 47053, -27703, 72899, -18234, 64710, 7613, 6728, -45735)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(5, 6, 7, 8, 3), PackedInt32Array(3, 2, 9, 5)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(64720, 7616, 50000, 30272, -15288, 74702, -55728, 26944, -75448, -20658, -51120, -27584, 6728, -45746, 47056, -27712, 72912, -18240)])
+source_geometry_group_name = &"navigation_polygon_source_group"
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_652n4")
+
+[node name="Environment" type="Node2D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_c5eys")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="Environment"]
+visible = false
+color = Color(0.686275, 0.513726, 0.682353, 1)
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="Environment"]
+visible = false
+color = Color(0.823529, 0.513726, 0.556863, 1)
+energy = 0.25
+shadow_color = Color(0.309804, 0.168627, 0.352941, 0.168627)
+shadow_filter = 1
+shadow_filter_smooth = 2.0
+height = 0.33
+
+[node name="PointLight2D" type="PointLight2D" parent="Environment"]
+visible = false
+position = Vector2(147, -2090)
+color = Color(0.196078, 0.0509804, 0.235294, 1)
+energy = 3.0
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 0.243137)
+texture = ExtResource("2_kx5ak")
+texture_scale = 6.0
+height = 1000.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Environment"]
+
+[node name="Control" type="Control" parent="Environment/CanvasLayer"]
+show_behind_parent = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="World"]
+position = Vector2(322, 3135.59)
+scale = Vector2(23.9336, 21.7176)
+texture = ExtResource("3_mkv58")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="World"]
+navigation_polygon = SubResource("NavigationPolygon_swsqg")
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Enemy" parent="Enemies" instance=ExtResource("4_pxnqc")]
+position = Vector2(-100, 0)
+
+[node name="Enemy2" parent="Enemies" instance=ExtResource("4_pxnqc")]
+position = Vector2(300, 0)
+metadata/_edit_lock_ = true
+
+[node name="Enemy3" parent="Enemies" instance=ExtResource("4_pxnqc")]
+position = Vector2(0, 466)
+metadata/_edit_lock_ = true
+
+[node name="Enemy4" parent="Enemies" instance=ExtResource("4_pxnqc")]
+position = Vector2(0, -678)
+metadata/_edit_lock_ = true
+
+[node name="Enemy5" parent="Enemies" instance=ExtResource("4_pxnqc")]
+position = Vector2(888, 0)
+metadata/_edit_lock_ = true
+
+[node name="Enemy6" parent="Enemies" instance=ExtResource("4_pxnqc")]
+position = Vector2(522, 422)
+metadata/_edit_lock_ = true
+
+[node name="Players" type="Node2D" parent="."]
+position = Vector2(264, 258)
+
+[node name="Player" parent="Players" instance=ExtResource("5_w3hai")]
+position = Vector2(565, 325)
+motion_mode = 0
+
+[node name="WorldCamera" type="Camera2D" parent="."]
+position = Vector2(562, 323)
