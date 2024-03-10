@@ -16,8 +16,14 @@ func get_shield() -> float:
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
+@onready var ui: Node2D = $UI
+@onready var chasing: Sprite2D = $UI/Chasing
+@onready var searching: Sprite2D = $UI/Searching
+
+
 
 var max_speed: float = 300.00
+var acceleration: float = 7.0
 var max_health: float = 100.0
 var max_shield: float = 100.0
 
@@ -29,11 +35,17 @@ var target_pos: Vector2 = Vector2.ZERO
 
 var is_chasing_player: bool = false
 var turn_speed: float = 30.0  # Adjust as needed
+var _velocity := Vector2.ZERO
 
 func _ready() -> void:
 	await (get_tree().create_timer(0.1).timeout)
-	nav_agent.path_desired_distance = 256
-	nav_agent.target_desired_distance = 256
+	nav_agent.path_desired_distance = 128
+	nav_agent.target_desired_distance = 1000
+	nav_agent.avoidance_enabled  = true
+	nav_agent.radius = 128
+	nav_agent.neighbor_distance = 512
+	nav_agent.max_speed = max_speed
+
 	home_position = self.global_position
 	animation_player.play("Enemy_Idle")
 	calculate_patrol_points()
@@ -43,16 +55,25 @@ func _physics_process(delta: float) -> void:
 	if nav_agent.is_navigation_finished():
 		return
 
-	if is_chasing_player: speed = max_speed
-	else: speed = 100
+	if is_chasing_player:
+		speed = max_speed
+		chasing.visible = true
+		searching.visible = false
 
+	else:
+		speed = 100
+		chasing.visible = false
+		searching.visible = true
+
+	ui.position = global_position
 
 	var target_global_position:= nav_agent.get_next_path_position()
 	var direction:= global_position.direction_to(target_global_position)
-	var desired_velocity:= direction * nav_agent.max_speed
-	var steering:= (desired_velocity - velocity) * delta * 4.0
-	velocity += steering
-	nav_agent.set_velocity(velocity)
+	var desired_velocity:= direction * speed
+	var steering:= (desired_velocity - _velocity) * delta* acceleration
+	_velocity += steering
+	nav_agent.set_velocity(_velocity)
+
 
 
 func calculate_patrol_points() -> void:
@@ -89,10 +110,11 @@ func remove() -> void:
 
 # Signals
 func _on_navigation_agent_2d_velocity_computed(safe_velocity: Vector2) -> void:
-	velocity = safe_velocity
-	nav_agent.set_velocity_forced(velocity)
+	_velocity = safe_velocity
+	nav_agent.set_velocity_forced(_velocity)
+	velocity = _velocity
 	move_and_slide()
-	rotation = lerp_angle(rotation, velocity.angle(), 10.0 * get_physics_process_delta_time())
+	rotation = lerp_angle(rotation, velocity.angle(), turn_speed * get_physics_process_delta_time())
 
 func _on_navigation_agent_2d_navigation_finished() -> void:
 	set_next_patrol_target()
@@ -106,3 +128,6 @@ func _on_deactivation_zone_area_exited(area: Area2D) -> void:
 		target_node = null
 		is_chasing_player = false
 		set_next_patrol_target()
+
+func _on_navigation_agent_2d_target_reached() -> void:
+	print("target_reached")

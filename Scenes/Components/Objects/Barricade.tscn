@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://crv5x8iaw7j6w"]
+
+[ext_resource type="Texture2D" uid="uid://0quul5lgevye" path="res://Assets/Images/Sprites/Objects/barricade.png" id="1_dr3og"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0r2ny"]
+size = Vector2(124, 130)
+
+[node name="StaticBody2D" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 31
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -1)
+shape = SubResource("RectangleShape2D_0r2ny")
+
+[node name="Barricade" type="Sprite2D" parent="."]
+position = Vector2(-1, 0)
+texture = ExtResource("1_dr3og")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+radius = 80.0
