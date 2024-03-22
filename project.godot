@@ -11,15 +11,34 @@ config_version=5
 [application]
 
 config/name="Game03"
+run/main_scene="res://Scenes/Main.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GlobalTime="*res://Scripts/Autoload/time.gd"
+MultiplayerInput="*res://addons/multiplayer_input/multiplayer_input.gd"
+PlayerManager="*res://Scripts/Autoload/player_manager.gd"
+
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=2
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
+mouse_cursor/custom_image="res://Assets/Images/UI/cursor.png"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/multiplayer_input/plugin.cfg")
+
+[gui]
+
+theme/custom_font="res://Assets/Fonts/vanilla_caramel.tres"
+theme/default_font_multichannel_signed_distance_field=true
+theme/default_font_generate_mipmaps=true
 
 [input]
 
@@ -81,6 +100,11 @@ aim={
 "deadzone": 0.5,
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":2,"canceled":false,"pressed":false,"double_click":false,"script":null)
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":-1,"axis":4,"axis_value":1.0,"script":null)
+]
+}
+join={
+"deadzone": 0.5,
+"events": [Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":6,"pressure":0.0,"pressed":true,"script":null)
 ]
 }
 start={
@@ -180,4 +204,7 @@ common/physics_ticks_per_second=120
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+textures/decals/filter=0
+textures/light_projectors/filter=0
 viewport/hdr_2d=true
+anti_aliasing/quality/use_taa=true

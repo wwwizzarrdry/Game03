@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/The Verdant Grove.ogg-b9cd1e2d5b1163b381b1545
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

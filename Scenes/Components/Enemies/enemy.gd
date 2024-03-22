@@ -1,4 +1,4 @@
-extends CharacterBody2D
+class_name Enemy extends CharacterBody2D
 
 @export var speed: float = 100.0
 @export var health:float = 50.0 : set = set_health, get = get_health
@@ -6,14 +6,14 @@ func set_health(val: float) -> void:
 	health = val
 func get_health() -> float:
 	return health
-@export var shield:float = 10.0 : set = set_shield, get = get_shield
+@export var shield:float = 100.0 : set = set_shield, get = get_shield
 func set_shield(val: float) -> void:
 	shield = val
 func get_shield() -> float:
 	return shield
 
 @onready var ray_cast_2d: RayCast2D = $Sprite2D/RayCast2D
-@onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var sprite: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
 @onready var ui: Node2D = $UI
@@ -33,12 +33,21 @@ var home_position: Vector2 = Vector2.ZERO
 var target_node = null
 var target_pos: Vector2 = Vector2.ZERO
 
+var is_dead: bool = false
 var is_chasing_player: bool = false
 var turn_speed: float = 30.0  # Adjust as needed
 var _velocity := Vector2.ZERO
 
+var shield_material: ShaderMaterial
+var explosion_material: ShaderMaterial
+
 func _ready() -> void:
-	await (get_tree().create_timer(0.1).timeout)
+	await (get_tree().create_timer(0.1).timeout) # Have to wait for the nav server
+
+	# Set the shield material shader by default
+	shield_material = load("res://Shaders/Shield_Material.tres").duplicate()
+	sprite.set_material(shield_material)
+
 	nav_agent.path_desired_distance = 128
 	nav_agent.target_desired_distance = 1000
 	nav_agent.avoidance_enabled  = true
@@ -75,7 +84,6 @@ func _physics_process(delta: float) -> void:
 	nav_agent.set_velocity(_velocity)
 
 
-
 func calculate_patrol_points() -> void:
 	pass
 
@@ -92,9 +100,14 @@ func set_next_patrol_target():
 		nav_agent.set_target_position(home_position)
 
 func recalc_path():
-	if target_node:
+	if is_dead:
+		return
+
+	if is_instance_valid(target_node):
+		is_chasing_player = true
 		nav_agent.target_position = target_node.global_position
 	else:
+		is_chasing_player = false
 		#nav_agent.target_position = patrol_points[current_patrol_point]
 		nav_agent.target_position = home_position
 
@@ -102,8 +115,43 @@ func _on_recalculate_timer_timeout() -> void:
 	recalc_path()
 
 func take_damage(data):
-	print("Damage Taken: ", data)
-	pass
+	if is_dead:
+		return
+
+	#print("Damage Taken: ", data)
+	var damage = data.damage
+	var remaining_damage = clamp(damage - get_shield(), 0, damage)
+
+	set_shield(clamp(get_shield() - damage, 0.0, max_shield))
+	set_health(clamp(get_health() - remaining_damage, 0.0, max_health))
+
+
+	var tween: Tween = get_tree().create_tween().set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+
+	if get_health() <= 0:
+		is_dead = true
+		explosion_material = load("res://Shaders/Burn_Dissolve_Material.tres").duplicate()
+		sprite.set_material(explosion_material)
+		sprite.material.set_shader_parameter("dissolve_value", 1.0);
+		tween.tween_method(set_shader_explosion_progress, 1.0, 0.0, 0.5);
+		tween.tween_callback(remove)
+	elif get_shield() > 0:
+		# Update the shield intensity
+		sprite.material.set_shader_parameter("shield_value", get_shield()/max_shield)
+		sprite.material.set_shader_parameter("flash_intensity", 1)
+		# Interpolate flash_intensity back to 0 over time
+		# args are: (method to call / start value / end value / duration of animation)
+		tween.tween_method(set_shader_flash_intensity, 0.0, 1.0, 0.25);
+	else:
+		# Just flash red for health damage
+		tween.tween_method(set_shader_flash_intensity, 1.0, 0.0, 0.25);
+
+func set_shader_flash_intensity(value: float):
+	sprite.material.set_shader_parameter("flash_intensity", value);
+
+func set_shader_explosion_progress(value: float):
+	print(value)
+	sprite.material.set_shader_parameter("dissolve_value", value);
 
 func remove() -> void:
 	if is_inside_tree(): self.queue_free()
@@ -130,4 +178,4 @@ func _on_deactivation_zone_area_exited(area: Area2D) -> void:
 		set_next_patrol_target()
 
 func _on_navigation_agent_2d_target_reached() -> void:
-	print("target_reached")
+	pass

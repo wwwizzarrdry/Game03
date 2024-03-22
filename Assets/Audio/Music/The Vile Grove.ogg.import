@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/The Vile Grove.ogg-786127f4e78b98ffff2a08fa0e
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

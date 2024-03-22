@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/Ludum Dare 30 - 05.ogg-74c7889fb355d3f88f6f34
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

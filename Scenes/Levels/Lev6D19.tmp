@@ -1,0 +1,197 @@
+[gd_scene load_steps=26 format=3 uid="uid://cwbdnpqyhyedo"]
+
+[ext_resource type="Texture2D" uid="uid://cr7qyhyyh36gi" path="res://Assets/Images/Textures/1024/spotlight_8.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://de3afbvymp8eh" path="res://Assets/Images/Textures/1024/spotlight_1.png" id="2"]
+[ext_resource type="Script" path="res://Scripts/scale_random.gd" id="3"]
+[ext_resource type="Texture2D" uid="uid://c3reddnqjrj5x" path="res://Assets/Images/Textures/1024/spotlight_7.png" id="4"]
+
+[sub_resource type="Gradient" id="1"]
+offsets = PackedFloat32Array(0.241895, 1)
+colors = PackedColorArray(0.439453, 0.279227, 0.245055, 1, 0.101928, 0.0601501, 0.105469, 1)
+
+[sub_resource type="GradientTexture1D" id="2"]
+gradient = SubResource("1")
+width = 360
+
+[sub_resource type="Gradient" id="3"]
+colors = PackedColorArray(0.03125, 0.00292969, 0.00292969, 1, 0.171287, 0.215749, 0.236328, 1)
+
+[sub_resource type="GradientTexture1D" id="4"]
+gradient = SubResource("3")
+width = 20
+
+[sub_resource type="CanvasItemMaterial" id="5"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="6"]
+offsets = PackedFloat32Array(0, 0.653722, 0.728155, 0.857605, 1)
+colors = PackedColorArray(1, 0.785156, 0, 0.466667, 0.136719, 0, 1, 0.52549, 10, 10, 10, 1, 20, 5, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="7"]
+gradient = SubResource("6")
+width = 128
+
+[sub_resource type="Curve" id="8"]
+_data = [Vector2(0, 0.464724), 0.0, 0.0, 0, 0, Vector2(0.627193, 0.203988), 0.0, 0.0, 0, 0, Vector2(0.831871, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0996932), -6.69142, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="9"]
+curve = SubResource("8")
+
+[sub_resource type="ParticleProcessMaterial" id="10"]
+lifetime_randomness = 0.5
+direction = Vector3(0, -1, 0)
+spread = 20.0
+flatness = 1.0
+gravity = Vector3(0, -90, 0)
+scale_curve = SubResource("9")
+color_ramp = SubResource("7")
+
+[sub_resource type="CanvasItemMaterial" id="11"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="12"]
+offsets = PackedFloat32Array(0, 0.032345, 0.140162, 0.339623, 1)
+colors = PackedColorArray(0.333333, 0.0823529, 0.0235294, 0, 4, 1, 0.3, 1, 5, 0.575391, 0.3, 1, 0, 0, 0, 0.176471, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="13"]
+gradient = SubResource("12")
+
+[sub_resource type="Curve" id="14"]
+_data = [Vector2(0, 0.338957), 0.0, 0.0, 0, 0, Vector2(0.0507426, 0.513804), 0.0, 0.0, 0, 0, Vector2(0.32797, 0.378834), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="15"]
+curve = SubResource("14")
+
+[sub_resource type="ParticleProcessMaterial" id="18"]
+lifetime_randomness = 0.8
+emission_shape = 2
+emission_sphere_radius = 1.0
+direction = Vector3(0, -1, 0)
+spread = 20.0
+gravity = Vector3(0, 98, 0)
+scale_curve = SubResource("15")
+color_ramp = SubResource("13")
+
+[sub_resource type="ParticleProcessMaterial" id="19"]
+lifetime_randomness = 0.7
+direction = Vector3(0, -1, 0)
+spread = 20.0
+flatness = 1.0
+gravity = Vector3(0, -90, 0)
+color_ramp = SubResource("7")
+
+[sub_resource type="Gradient" id="22"]
+offsets = PackedFloat32Array(0, 0.0965732, 0.697819, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.179688, 0.0665413, 0.154053, 1, 0.680507, 0.72168, 0.533461, 1, 1, 0.997144, 0.949568, 1)
+
+[sub_resource type="GradientTexture1D" id="23"]
+gradient = SubResource("22")
+
+[sub_resource type="Environment" id="24"]
+background_mode = 4
+glow_enabled = true
+glow_levels/1 = 1.0
+glow_levels/2 = 1.0
+glow_levels/4 = 1.0
+glow_levels/6 = 1.0
+glow_intensity = 0.1
+glow_blend_mode = 1
+adjustment_enabled = true
+adjustment_color_correction = SubResource("23")
+
+[sub_resource type="CanvasItemMaterial" id="25"]
+blend_mode = 1
+
+[node name="Level00" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(9.15532e-05, 360)
+rotation = -1.5708
+scale = Vector2(1, 640)
+texture = SubResource("2")
+centered = false
+
+[node name="Landscape" type="Polygon2D" parent="."]
+antialiased = true
+texture = SubResource("4")
+texture_offset = Vector2(400, 0)
+texture_scale = Vector2(0.1, 1)
+polygon = PackedVector2Array(0, 192, 0, 360, 640, 360, 640, 192, 630, 187, 613, 186, 576, 192, 562, 198, 549, 208, 531, 232, 512, 256, 479, 266, 436, 265, 393, 253, 345, 243, 302, 245, 262, 249, 218, 264, 176, 264, 128, 256, 104, 240, 80, 240, 64, 232, 48, 208, 32, 208, 24, 200)
+
+[node name="ExampleParticle" type="GPUParticles2D" parent="."]
+modulate = Color(4, 1, 0.3, 1)
+material = SubResource("5")
+position = Vector2(564, 204)
+amount = 50
+process_material = SubResource("10")
+texture = ExtResource("2")
+
+[node name="Glow" type="Sprite2D" parent="ExampleParticle"]
+material = SubResource("11")
+texture = ExtResource("1")
+script = ExtResource("3")
+
+[node name="ExampleParticle3" type="GPUParticles2D" parent="."]
+position = Vector2(356, 279)
+amount = 500
+process_material = SubResource("18")
+texture = ExtResource("4")
+
+[node name="Glow" type="Sprite2D" parent="ExampleParticle3"]
+modulate = Color(4, 1, 0.3, 1)
+material = SubResource("11")
+scale = Vector2(2.3125, 0.6875)
+texture = ExtResource("2")
+script = ExtResource("3")
+
+[node name="ExampleParticle2" type="GPUParticles2D" parent="."]
+modulate = Color(4, 0.3, 2.24033, 1)
+material = SubResource("5")
+position = Vector2(449, 276)
+amount = 30
+process_material = SubResource("19")
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="LabelIntensity1" type="Label" parent="Node2D"]
+modulate = Color(0.9, 0.9, 0.9, 1)
+text = "P0.9"
+
+[node name="LabelIntensity2" type="Label" parent="Node2D"]
+text = "P1.0"
+
+[node name="LabelIntensity3" type="Label" parent="Node2D"]
+modulate = Color(1.2, 1.2, 1.2, 1)
+text = "P1.2"
+
+[node name="LabelIntensity4" type="Label" parent="Node2D"]
+modulate = Color(1.6, 1.6, 1.6, 1)
+text = "P1.6"
+
+[node name="LabelIntensity5" type="Label" parent="Node2D"]
+modulate = Color(1, 1, 2.4, 1)
+text = "P2.4"
+
+[node name="LabelIntensity6" type="Label" parent="Node2D"]
+modulate = Color(4, 1, 1, 1)
+text = "P4.0"
+
+[node name="LabelIntensity7" type="Label" parent="Node2D"]
+modulate = Color(1, 5, 1, 1)
+text = "P5.0"
+
+[node name="LabelIntensity8" type="Label" parent="Node2D"]
+modulate = Color(1, 1, 6, 1)
+text = "P6.0"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("24")
+
+[node name="spotlight_1" type="Sprite2D" parent="."]
+modulate = Color(4, 1, 0.301961, 0.196078)
+material = SubResource("25")
+position = Vector2(563, 204)
+scale = Vector2(4.03125, 4.03125)
+texture = ExtResource("2")

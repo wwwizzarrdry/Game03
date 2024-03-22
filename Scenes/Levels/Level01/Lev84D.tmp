@@ -1,0 +1,67 @@
+[gd_scene load_steps=12 format=3 uid="uid://da1piv8t1hgko"]
+
+[ext_resource type="Script" path="res://Scenes/Levels/Level01/level_01.gd" id="1_3opbr"]
+[ext_resource type="Shader" path="res://Scenes/Levels/Level01/square_pattern.gdshader" id="2_gnugc"]
+[ext_resource type="PackedScene" uid="uid://drirfxvlape7y" path="res://Scenes/Components/Enemies/Enemy_02.tscn" id="2_i4mda"]
+[ext_resource type="PackedScene" uid="uid://dsfeoqaoogy2q" path="res://Scenes/Components/Enemies/Enemy_01.tscn" id="4_prh85"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_ggyjm"]
+vertices = PackedVector2Array(1608, 968, -351, 957, -322, -198, 1603, -212)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-332, -208, -362, 967, 1619, 979, 1613, -223)])
+source_geometry_group_name = &"navigation_polygon_source_group"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4s8w5"]
+shader = ExtResource("2_gnugc")
+
+[sub_resource type="Gradient" id="1"]
+offsets = PackedFloat32Array(0.241895, 1)
+colors = PackedColorArray(0.439453, 0.279227, 0.245055, 1, 0.101928, 0.0601501, 0.105469, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7ce6v"]
+gradient = SubResource("1")
+width = 360
+
+[sub_resource type="Gradient" id="Gradient_l7byp"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_get52"]
+gradient = SubResource("Gradient_l7byp")
+
+[sub_resource type="Environment" id="Environment_5mqda"]
+background_mode = 3
+glow_enabled = true
+glow_levels/1 = 1.0
+glow_levels/2 = 1.0
+glow_levels/5 = 0.0
+glow_blend_mode = 1
+adjustment_enabled = true
+adjustment_color_correction = SubResource("GradientTexture1D_get52")
+
+[node name="Level01" type="Node2D"]
+script = ExtResource("1_3opbr")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+position = Vector2(9, 0)
+navigation_polygon = SubResource("NavigationPolygon_ggyjm")
+
+[node name="Background" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_4s8w5")
+position = Vector2(-308.65, 893.643)
+rotation = -1.5708
+scale = Vector2(2.96461, 1897.31)
+texture = SubResource("GradientTexture1D_7ce6v")
+centered = false
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_5mqda")
+
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="Enemy" parent="." instance=ExtResource("4_prh85")]
+position = Vector2(1007, 557)
+
+[node name="Enemy2" parent="." instance=ExtResource("2_i4mda")]
+position = Vector2(1014, 153)
+
+[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]

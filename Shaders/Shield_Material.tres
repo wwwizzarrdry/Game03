@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://c60pj2l6ktqad"]
+
+[ext_resource type="Shader" path="res://Scenes/Components/Enemies/shield.gdshader" id="1_7vdgw"]
+[ext_resource type="Texture2D" uid="uid://vbn52gc87v5b" path="res://Assets/Images/Textures/Noise/Spokes 3 - 128x128.png" id="2_xsc18"]
+[ext_resource type="Texture2D" uid="uid://v6xj00ysyp8e" path="res://Assets/Images/Textures/Noise/Cracks 10 - 128x128.png" id="3_4kvui"]
+[ext_resource type="Texture2D" uid="uid://lataaiei1t40" path="res://Assets/Images/Textures/Noise/Cracks 9 - 128x128.png" id="4_v1wwi"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_7vdgw")
+shader_parameter/flash_intensity = 1.0
+shader_parameter/shield_value = 1.0
+shader_parameter/shield_100_texture = ExtResource("2_xsc18")
+shader_parameter/shield_50_texture = ExtResource("4_v1wwi")
+shader_parameter/shield_25_texture = ExtResource("3_4kvui")

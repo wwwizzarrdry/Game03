@@ -1,0 +1,117 @@
+[gd_scene load_steps=13 format=3 uid="uid://dvdyeq4a45813"]
+
+[ext_resource type="Script" path="res://Scenes/Components/Bullets/Bullet01/rocket01.gd" id="1_jt00l"]
+[ext_resource type="PackedScene" uid="uid://t21jubj15vvd" path="res://Scenes/Components/Smoketrail/Smoketrail.tscn" id="2_dlchk"]
+[ext_resource type="Texture2D" uid="uid://ctlp63v88s8tv" path="res://Assets/Images/Sprites/Projectiles/All_Rocket.png" id="2_eviwj"]
+[ext_resource type="Texture2D" uid="uid://h058s176bw7m" path="res://Assets/Images/Textures/256/spotlight_2.png" id="4_jky6y"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wuump"]
+radius = 7.0
+height = 32.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tg1v7"]
+atlas = ExtResource("2_eviwj")
+region = Rect2(96, 192, 32, 16)
+
+[sub_resource type="Gradient" id="Gradient_pddsc"]
+offsets = PackedFloat32Array(0.0152905, 0.593272, 0.770642, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.00566115, 0.00566115, 0.00566115, 1, 1.8, 0.51, 0.251, 1, 4, 1.9, 1.33, 1)
+
+[sub_resource type="Animation" id="Animation_ad0nn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("explosion:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+
+[sub_resource type="Animation" id="Animation_qo5ar"]
+resource_name = "rocket_explosion"
+length = 0.5
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("explosion:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1.5, 1.5), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3qal0"]
+_data = {
+"RESET": SubResource("Animation_ad0nn"),
+"rocket_explosion": SubResource("Animation_qo5ar")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7cksq"]
+radius = 85.0059
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_10xtf"]
+blend_mode = 1
+
+[node name="Rocket01" type="Area2D" groups=["projectile"]]
+collision_layer = 8
+collision_mask = 7
+script = ExtResource("1_jt00l")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_wuump")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_tg1v7")
+flip_h = true
+
+[node name="Smoketrail" parent="." instance=ExtResource("2_dlchk")]
+width = 40.0
+limited_lifetime = true
+wildness = 40.0
+min_spawn_distance = 1.0
+gravity = Vector2(0, 0)
+gradient_col = SubResource("Gradient_pddsc")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_3qal0")
+}
+speed_scale = 2.0
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-1.2219e-06, 1.19209e-07)
+scale = Vector2(1.6, 0.7)
+
+[node name="LockonZone" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LockonZone"]
+shape = SubResource("CircleShape2D_7cksq")
+
+[node name="explosion" type="Sprite2D" parent="."]
+modulate = Color(4, 1.9, 1.33, 1)
+material = SubResource("CanvasItemMaterial_10xtf")
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("4_jky6y")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="area_entered" from="LockonZone" to="." method="_on_lockon_zone_area_entered"]
+[connection signal="body_entered" from="LockonZone" to="." method="_on_lockon_zone_body_entered"]

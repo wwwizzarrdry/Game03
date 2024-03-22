@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/VGMA Challenge - 12.ogg-0fd84d1ffd3de951924ee
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

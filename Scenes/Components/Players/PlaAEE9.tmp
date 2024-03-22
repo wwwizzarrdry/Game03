@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=3 uid="uid://de1svi7njmybm"]
+
+[ext_resource type="Script" path="res://Scenes/Components/Players/player.gd" id="1_m8wmf"]
+[ext_resource type="Texture2D" uid="uid://d3wew82mnhsvv" path="res://Scenes/Components/Players/Resources/shoulders_white.tres" id="1_s2yy0"]
+[ext_resource type="Texture2D" uid="uid://2fhya7fbcmql" path="res://Scenes/Components/Players/Resources/head_white.tres" id="2_vxte2"]
+[ext_resource type="Texture2D" uid="uid://cyjjx4injxf00" path="res://Scenes/Components/Players/Resources/backpack_white.tres" id="3_ayrf3"]
+[ext_resource type="Texture2D" uid="uid://bgveg8mw5ffew" path="res://Scenes/Components/Players/Resources/arm_right_white.tres" id="4_nf7y0"]
+[ext_resource type="Texture2D" uid="uid://c6jfsrnwxwrlu" path="res://Scenes/Components/Players/Resources/arm_left_white.tres" id="5_jmvk4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m3tjm"]
+radius = 779.133
+
+[node name="Player" type="CharacterBody2D"]
+scale = Vector2(0.5, 0.5)
+collision_mask = 13
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_m8wmf")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-43, -94, -41, -96, -38, -99, -35, -101, -32, -103, -29, -104, -27, -105, -25, -106, -22, -107, -19, -108, -15, -109, -9, -110, -2, -111, 0, -111, 4, -111, 8, -112, 13, -112, 22, -112, 25, -112, 35, -111, 41, -110, 45, -109, 49, -108, 52, -107, 55, -106, 58, -105, 61, -104, 64, -103, 67, -102, 69, -101, 71, -100, 72, -100, 73, -99, 76, -98, 80, -96, 86, -93, 92, -90, 113, -77, 137, -60, 141, -57, 142, -56, 145, -54, 150, -50, 154, -47, 159, -43, 164, -39, 166, -37, 169, -35, 171, -33, 172, -32, 176, -32, 179, -31, 181, -30, 183, -29, 184, -28, 186, -27, 189, -25, 191, -23, 192, -21, 193, -19, 194, -17, 195, -15, 196, -12, 196, -8, 196, -2, 195, 2, 195, 3, 194, 5, 193, 7, 192, 9, 190, 11, 188, 13, 186, 15, 183, 17, 180, 18, 176, 20, 171, 20, 168, 20, 163, 19, 160, 18, 157, 17, 155, 16, 152, 14, 149, 11, 148, 9, 147, 8, 146, 6, 146, 4, 145, 2, 143, 1, 139, -1, 138, -2, 136, -3, 133, -5, 129, -8, 128, -9, 120, -15, 118, -16, 112, -20, 104, -24, 96, -28, 88, -31, 87, -32, 80, -34, 76, -35, 77, -32, 79, -24, 80, -21, 81, -16, 82, -9, 82, 0, 82, 9, 81, 16, 80, 20, 79, 24, 76, 32, 75, 35, 72, 40, 71, 41, 72, 41, 76, 40, 80, 38, 88, 35, 92, 33, 94, 33, 96, 32, 98, 31, 98, 30, 99, 28, 101, 24, 104, 21, 110, 16, 112, 15, 115, 14, 120, 13, 126, 13, 129, 14, 133, 15, 135, 16, 136, 16, 139, 18, 142, 21, 144, 24, 145, 25, 147, 28, 149, 32, 149, 36, 149, 38, 149, 44, 148, 48, 148, 50, 144, 56, 142, 58, 136, 63, 132, 64, 128, 65, 120, 66, 118, 66, 112, 71, 111, 72, 104, 78, 101, 80, 96, 84, 91, 88, 88, 90, 80, 96, 72, 101, 66, 104, 64, 105, 56, 109, 48, 112, 40, 114, 32, 116, 24, 116, 15.9997, 116, 8, 116, -0.0828114, 114.159, -8, 112, -16, 109, -24, 106, -27, 104, -32, 101, -38, 96, -40, 93, -48, 96, -56, 97, -64, 98, -72, 98, -80, 98, -88, 98, -96, 96, -104, 95, -112, 93, -120, 90, -123, 88, -128, 84, -132, 80, -136, 76, -138, 72, -142, 64, -144, 56, -146, 48, -147, 40, -148, 32, -148, 24, -148, 16, -148, 8, -149, 0, -149, -8, -149, -16, -149, -24, -148, -32, -147, -40, -146, -48, -143, -56, -140, -64, -135, -72, -132, -76, -128, -80, -123, -85, -120, -87, -117, -89, -112, -91, -104, -95, -96, -97, -91, -98, -88, -98, -80, -99, -72, -99, -64, -99, -64, -99, -55, -98, -49, -97, -48, -96)
+
+[node name="Presence" type="Area2D" parent="."]
+collision_mask = 31
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Presence"]
+position = Vector2(10, 6)
+shape = SubResource("CircleShape2D_m3tjm")
+debug_color = Color(0.854902, 0.337255, 0.376471, 0.419608)
+
+[node name="BodyParts" type="Node2D" parent="."]
+rotation = -1.5708
+
+[node name="Shoulders" type="Sprite2D" parent="BodyParts"]
+texture = ExtResource("1_s2yy0")
+
+[node name="Backpack" type="Sprite2D" parent="BodyParts"]
+position = Vector2(0.000300459, -83)
+texture = ExtResource("3_ayrf3")
+
+[node name="ArmRight" type="Sprite2D" parent="BodyParts"]
+position = Vector2(-65, 50)
+texture = ExtResource("4_nf7y0")
+
+[node name="ArmLeft" type="Sprite2D" parent="BodyParts"]
+position = Vector2(45.9997, 73.0002)
+texture = ExtResource("5_jmvk4")
+
+[node name="Head" type="Sprite2D" parent="BodyParts"]
+texture = ExtResource("2_vxte2")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(1152, 0)
+collision_mask = 23

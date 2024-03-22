@@ -1,0 +1,6 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://c3yuibxl8mk0w"]
+
+[ext_resource type="FontFile" uid="uid://c5xqdq45e3s4f" path="res://Assets/Fonts/vanilla_caramel/Vanilla Caramel.otf" id="1_tr506"]
+
+[resource]
+base_font = ExtResource("1_tr506")

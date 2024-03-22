@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://drirfxvlape7y"]
+[gd_scene load_steps=15 format=3 uid="uid://drirfxvlape7y"]
 
 [ext_resource type="Texture2D" uid="uid://2ejmwk1fux6h" path="res://Assets/Images/Sprites/Enemies/Alien02.png" id="1_72suj"]
 [ext_resource type="Script" path="res://Scenes/Components/Enemies/enemy.gd" id="1_qogn5"]
 [ext_resource type="Texture2D" uid="uid://b0rv7ts6jxljp" path="res://Assets/Images/Sprites/Enemies/Alien02_Normal.png" id="2_5d2ua"]
+[ext_resource type="Material" uid="uid://c60pj2l6ktqad" path="res://Shaders/Shield_Material.tres" id="2_xbe6p"]
 [ext_resource type="Texture2D" uid="uid://cxvprt2n6e5iu" path="res://Assets/Images/Textures/light_fade.png" id="3_i0pnq"]
 [ext_resource type="Texture2D" uid="uid://blga5im05mvyx" path="res://Assets/Images/Textures/moon_light.png" id="4_avleb"]
 [ext_resource type="Texture2D" uid="uid://cmao8k6fo66w7" path="res://Assets/Images/Sprites/Behavior/exclamation_mark.png" id="6_gpyox"]
@@ -102,7 +103,7 @@ radius = 664.091
 diffuse_texture = ExtResource("1_72suj")
 normal_texture = ExtResource("2_5d2ua")
 
-[node name="Enemy" type="CharacterBody2D"]
+[node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
 collision_mask = 14
 motion_mode = 1
@@ -131,6 +132,7 @@ autostart = true
 
 [node name="ActivationZone" type="Area2D" parent="."]
 collision_layer = 2
+collision_mask = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ActivationZone"]
 shape = SubResource("CircleShape2D_dwiur")
@@ -138,12 +140,15 @@ debug_color = Color(0.964706, 0.164706, 0.141176, 0.419608)
 
 [node name="DeactivationZone" type="Area2D" parent="."]
 collision_layer = 2
+collision_mask = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DeactivationZone"]
 shape = SubResource("CircleShape2D_dfk8w")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+material = ExtResource("2_xbe6p")
 rotation = -1.5708
 texture = SubResource("CanvasTexture_5p7ne")
 metadata/_edit_lock_ = true
