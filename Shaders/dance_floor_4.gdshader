@@ -48,5 +48,5 @@ void fragment() {
     vec2 black = smoothstep(1.08, 0.95, cos(frag * TWO_PI));
     color.rgb *= black.x * black.y * smoothstep(1.0, 0.0, length(fract(frag) - 0.5));
 
-    COLOR = vec4(color.rgb, 0.75);
+    COLOR = vec4(color.rgb, grid_color.a);
 }

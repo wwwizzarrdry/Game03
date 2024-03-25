@@ -1,0 +1,60 @@
+[gd_scene load_steps=8 format=3 uid="uid://cnsplfxva07w0"]
+
+[ext_resource type="Script" path="res://Scenes/Components/MiniMap/mini_map.gd" id="1_07j3d"]
+[ext_resource type="Texture2D" uid="uid://bhdyjd1rgkung" path="res://Assets/Images/Minimap/panel_woodDetail_blank.png" id="1_vv0ft"]
+[ext_resource type="Texture2D" uid="uid://bhd3m4xnkvs88" path="res://Assets/Images/Minimap/pattern_blueprintPaper.png" id="2_u7ax8"]
+[ext_resource type="Texture2D" uid="uid://3qnutjo5r5j0" path="res://Assets/Images/Minimap/minimapIcon_arrowA.png" id="3_yic1c"]
+[ext_resource type="Texture2D" uid="uid://b26w0hkl3qh5t" path="res://Assets/Images/Minimap/minimapIcon_jewelRed.png" id="4_du85j"]
+[ext_resource type="Texture2D" uid="uid://ccj5hsjkg5om1" path="res://Assets/Images/Sprites/Projectiles/Bullet_Pink.png" id="4_r0mb1"]
+[ext_resource type="Texture2D" uid="uid://d2t4ft413nbix" path="res://Assets/Images/Minimap/minimapIcon_exclamationYellow.png" id="5_c0y0y"]
+
+[node name="MiniMap" type="MarginContainer"]
+offset_right = 200.0
+offset_bottom = 200.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+script = ExtResource("1_07j3d")
+
+[node name="Frame" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_vv0ft")
+patch_margin_left = 64
+patch_margin_top = 64
+patch_margin_right = 64
+patch_margin_bottom = 64
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Grid" type="TextureRect" parent="MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_u7ax8")
+stretch_mode = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="MarginContainer/Grid"]
+position = Vector2(71, 72)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_r0mb1")
+
+[node name="PlayerMarker" type="Sprite2D" parent="MarginContainer/Grid"]
+visible = false
+position = Vector2(75, 75)
+texture = ExtResource("3_yic1c")
+
+[node name="MobMarker" type="Sprite2D" parent="MarginContainer/Grid"]
+visible = false
+position = Vector2(35, 35)
+texture = ExtResource("4_du85j")
+
+[node name="AlertMarker" type="Sprite2D" parent="MarginContainer/Grid"]
+visible = false
+position = Vector2(120, 120)
+texture = ExtResource("5_c0y0y")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

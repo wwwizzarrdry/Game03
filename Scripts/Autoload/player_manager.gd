@@ -4,6 +4,7 @@ extends Node
 # device is -1 for keyboard/mouse, 0+ for joypads
 # these concepts seem similar but it is useful to separate them so for example, device 6 could control player 1.
 
+signal player_created(player_num, player_node)
 signal player_joined(player)
 signal player_left(player)
 
@@ -21,6 +22,7 @@ func join(device: int):
 		# "team" and "car" are remnants from my game just to provide an example
 		player_data[player] = {
 			"device": device,
+			"node":null,
 			"team":0,
 			"car":"muscle",
 		}
@@ -58,6 +60,9 @@ func set_player_data(player: int, key: StringName, value: Variant):
 		return
 	
 	player_data[player][key] = value
+	
+	if key == "node":
+		player_created.emit(player, value)
 
 # call this from a loop in the main menu or anywhere they can join
 # this is an example of how to look for an action on all devices

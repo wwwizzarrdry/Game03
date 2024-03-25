@@ -1,4 +1,5 @@
-class_name Player extends CharacterBody2D
+extends CharacterBody2D
+class_name Player 
 
 signal leave(player_num)
 
@@ -7,16 +8,19 @@ signal leave(player_num)
 		return player_id
 	set(value):
 		player_id = value
+
 @export var speed: float = 500.0 : 
 	get: 
 		return speed
 	set(value):
 		speed = value
+
 @export var mass: float = 1.0 : 
 	get: 
 		return mass
 	set(value):
 		mass = value
+
 @export var health:float = 50.0 :
 	get:
 		return health
@@ -26,17 +30,19 @@ signal leave(player_num)
 		if health <= 0.0:
 			# The player died.
 			get_tree().reload_current_scene()
+
 @export var shield:float = 10.0 :
 	get:
 		return shield
 	set(value):
 		shield = value
+
 @onready var ray_cast_2d: RayCast2D = $RayCast2D
 
 var INPUT
+var max_speed: float = 500.0
 var max_health: float = 100.0
 var max_shield: float = 100.0
-var max_speed: float = 600.0
 var acceleration: float = 3000.0
 var friction: float = 0
 var rotate_speed: float = 10.0
@@ -48,6 +54,7 @@ var is_aiming = false
 var can_shoot = true
 var is_shooting = false
 
+var minimap_icon = "player"
 
 # call this function when spawning this player to set up the INPUT object based on the device
 func init(player_num: int):
@@ -78,10 +85,14 @@ func _process(delta):
 		is_aiming = false
 		self.modulate = Color(1.0, 1.0, 1.0, 1.0)
 	
+	if INPUT.is_action_pressed("shoot"):
+		$BodyParts/Weapons/Pistol.shoot()
+	
 	# let the player leave by pressing the "join" button
 	# this will need to be moved to the Pause menu as a menu option
 	if PlayerManager.someone_wants_to_start() and INPUT.is_action_just_pressed("join"):
 		# an alternative to this is just call PlayerManager.leave(player)
+		Signals.minimap_object_removed.emit(self)
 		self.leave.emit(player_id)
 
 func _physics_process(_delta: float) -> void:

@@ -1,8 +1,38 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://t0liv12x86ot"]
+[gd_resource type="AudioBusLayout" load_steps=6 format=3 uid="uid://t0liv12x86ot"]
 
 [sub_resource type="AudioEffectSpectrumAnalyzer" id="AudioEffectSpectrumAnalyzer_lam42"]
 resource_name = "SpectrumAnalyzer"
 
+[sub_resource type="AudioEffectPanner" id="AudioEffectPanner_4ikb0"]
+resource_local_to_scene = true
+resource_name = "Panner"
+
+[sub_resource type="AudioEffectPhaser" id="AudioEffectPhaser_luwmd"]
+resource_local_to_scene = true
+resource_name = "Phaser"
+rate_hz = 0.01
+
+[sub_resource type="AudioEffectStereoEnhance" id="AudioEffectStereoEnhance_eh7cn"]
+resource_local_to_scene = true
+resource_name = "StereoEnhance"
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_bh5na"]
+resource_name = "Reverb"
+
 [resource]
 bus/0/effect/0/effect = SubResource("AudioEffectSpectrumAnalyzer_lam42")
 bus/0/effect/0/enabled = true
+bus/1/name = &"Pistol"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectPanner_4ikb0")
+bus/1/effect/0/enabled = true
+bus/1/effect/1/effect = SubResource("AudioEffectPhaser_luwmd")
+bus/1/effect/1/enabled = true
+bus/1/effect/2/effect = SubResource("AudioEffectStereoEnhance_eh7cn")
+bus/1/effect/2/enabled = true
+bus/1/effect/3/effect = SubResource("AudioEffectReverb_bh5na")
+bus/1/effect/3/enabled = true

@@ -65,7 +65,6 @@ func add_new_point(point_pos:Vector2, at_pos := -1):
 
 
 func _on_Decay_tween_all_completed():
-	print("Tween done!")
 	tween.kill()
 	if is_inside_tree():
 		get_parent().remove_child(self)

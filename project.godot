@@ -19,7 +19,9 @@ config/icon="res://icon.svg"
 
 GlobalTime="*res://Scripts/Autoload/time.gd"
 MultiplayerInput="*res://addons/multiplayer_input/multiplayer_input.gd"
+Signals="*res://Scripts/Autoload/Signals.gd"
 PlayerManager="*res://Scripts/Autoload/player_manager.gd"
+ToastParty="*res://addons/toastparty/toast-autoload.gd"
 
 [display]
 
@@ -32,7 +34,7 @@ mouse_cursor/custom_image="res://Assets/Images/UI/cursor.png"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/multiplayer_input/plugin.cfg")
+enabled=PackedStringArray("res://addons/multiplayer_input/plugin.cfg", "res://addons/toastparty/plugin.cfg")
 
 [gui]
 

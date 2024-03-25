@@ -8,13 +8,13 @@ extends Node2D
 
 @onready var default_font: FontVariation = preload("res://Assets/Fonts/roboto.tres")
 @onready var world_camera = %WorldCamera as WorldCamera
-#@onready var grid: Sprite2D = $Level/Dancefloor/Grid
-@onready var color_rect: ColorRect = $Level/Dancefloor/ColorRect
+#@onready var color_rect: ColorRect = $Level/Dancefloor/ColorRect
 
-var dancefloor_material: ShaderMaterial
+
+#var dancefloor_material: ShaderMaterial
 var player_manager := PlayerManager
 var player_nodes: Dictionary = {} # map from player integer to the player node
-var max_player_separation_distance: float = 3000.0
+var max_player_separation_distance: float = 2000.0
 var max_distance_radius: float = max_player_separation_distance / 2
 var max_distance_alpha: float = 0.0 
 var player_count: int = 0
@@ -23,16 +23,17 @@ func _ready():
 	player_manager.player_joined.connect(spawn_player)
 	player_manager.player_left.connect(delete_player)
 	
-	color_rect.position = Vector2(-5000,-5000)
-	dancefloor_material = color_rect.get_material()
-	#dancefloor_material = grid.get_material()
+	#color_rect.position = Vector2(-5000,-5000)
+	#dancefloor_material = color_rect.get_material()
 	
+	pass
+
 func _process(delta):
 	player_manager.handle_join_input()
-	
+
 	if player_count > 0:
 		update_dancefloor()
-	
+
 	if player_count > 1:
 		apply_tether_force(delta)
 		queue_redraw()
@@ -74,19 +75,19 @@ func draw_cam_rect():
 	draw_rect(world_camera.cam_rect, Color.CORAL, false, 4.0)
 
 func update_dancefloor():
-	var grid_size = dancefloor_material.get_shader_parameter("grid_size") - 1
-	for player in player_nodes:
-		var player_global_position = player_nodes[player].global_position
-		var player_dir = player_nodes[player].look_dir
-		var uv_position = (player_global_position + Vector2(abs(color_rect.position.x), abs(color_rect.position.y))) / 10000
-		dancefloor_material.set_shader_parameter("player_position_%s" % player, uv_position * grid_size)
-		dancefloor_material.set_shader_parameter("player_direction_%s" % player, player_dir)
-		#print(player_dir)
-		#print(uv_position, uv_position * grid_size)
+	#var grid_size = dancefloor_material.get_shader_parameter("grid_size") - 1
+	#for player in player_nodes:
+		#var player_global_position = player_nodes[player].global_position
+		#var player_dir = player_nodes[player].look_dir
+		#var uv_position = (player_global_position + Vector2(abs(color_rect.position.x), abs(color_rect.position.y))) / 10000
+		#dancefloor_material.set_shader_parameter("player_position_%s" % player, uv_position * grid_size)
+		#dancefloor_material.set_shader_parameter("player_direction_%s" % player, player_dir)
+	pass
 
-func clear_dancefloor(player_num):
-		dancefloor_material.set_shader_parameter("player_position_%s" % player_num, Vector2(-10000, -10000))
-		update_dancefloor()
+func clear_dancefloor(_player_num):
+	#dancefloor_material.set_shader_parameter("player_position_%s" % player_num, Vector2(-10000, -10000))
+	#update_dancefloor()
+	pass
 
 
 # Player Join/Leave
@@ -99,6 +100,8 @@ func spawn_player(player_num: int):
 	
 	# 2. let the player_node know which player it is and initalize with the correct device id
 	player_node.init(player_num)
+	player_manager.set_player_data(player_num, "node", player_node)
+	player_manager.player_created.emit(player_num, player_node)
 	
 	# 3. add the player to the tree
 	$Players.add_child(player_node)
@@ -109,14 +112,15 @@ func spawn_player(player_num: int):
 	# 5. Add player to Phantom Camera Group
 	world_camera.add_target(player_node)
 	player_count = player_manager.get_player_count()
-	
+
 func delete_player(player_num: int):
 	print("Delete Player %s" % player_num)
 	player_nodes[player_num].queue_free()
 	player_nodes.erase(player_num)
 	player_count = player_manager.get_player_count()
+	
 	# Clear the highlighted floor tiles
-	clear_dancefloor(player_num)
+	#clear_dancefloor(player_num)
 
 func on_player_leave(player_num: int):
 	
@@ -158,3 +162,17 @@ func get_remaining_distance_to_edge(center, target):
 	var current_distance = center.distance_to(target.global_position)
 	var remaining_distance = max_distance_radius - current_distance
 	return max(remaining_distance, 0.0)
+
+
+func _on_button_pressed():
+	$Level/Island.world_seed = randi_range(1, 100000)
+	ToastParty.show({
+		"text": "World Seed: " + str($Level/Island.world_seed), # Text (emojis can be used)
+		"bgcolor": Color(0, 0, 0, 0.7),     # Background Color
+		"color": Color(1, 1, 1, 1),         # Text Color
+		"gravity": "top",                   # top or bottom
+		"direction": "right",               # left or center or right
+		"text_size": 32,                    # [optional] Text (font) size // experimental (warning!)
+		"use_font": false                    # [optional] Use custom ToastParty font // experimental (warning!)
+	})
+	$Level/Island.generate_world()

@@ -1,0 +1,32 @@
+[gd_resource type="CanvasTexture" load_steps=7 format=3 uid="uid://c6odx3fi8jcbr"]
+
+[ext_resource type="Texture2D" uid="uid://dctdhg5ke8dra" path="res://Assets/Images/Sprites/Player/Weapons.png" id="1_sfk3w"]
+[ext_resource type="Texture2D" uid="uid://jmhbfvdydfns" path="res://Assets/Images/Sprites/Player/Weapons_Normal.png" id="2_tieug"]
+[ext_resource type="Texture2D" uid="uid://b581b3wdu8s0d" path="res://Assets/Images/Sprites/Player/Weapons_Specular.png" id="3_picj5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5uqum"]
+resource_local_to_scene = true
+atlas = ExtResource("1_sfk3w")
+region = Rect2(768, 588, 58, 117)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uo1jy"]
+resource_local_to_scene = true
+atlas = ExtResource("2_tieug")
+region = Rect2(768, 588, 58, 117)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xcu1w"]
+resource_local_to_scene = true
+atlas = ExtResource("3_picj5")
+region = Rect2(768, 588, 58, 117)
+filter_clip = true
+
+[resource]
+resource_local_to_scene = true
+diffuse_texture = SubResource("AtlasTexture_5uqum")
+normal_texture = SubResource("AtlasTexture_uo1jy")
+specular_texture = SubResource("AtlasTexture_xcu1w")
+specular_shininess = 0.1
+texture_filter = 1
+texture_repeat = 1

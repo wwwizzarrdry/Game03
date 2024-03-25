@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://dgfc7ahpqb6vj"]
+
+[ext_resource type="Script" path="res://Scenes/Components/Weapons/Pistol/pistol.gd" id="1_aop3h"]
+[ext_resource type="Texture2D" uid="uid://c6odx3fi8jcbr" path="res://Scenes/Components/Weapons/Pistol/Pistol_Texture.tres" id="1_fypko"]
+[ext_resource type="AudioStream" uid="uid://ddrhif4s6882f" path="res://Assets/Audio/Gun_Sound_Effects/pistol.wav" id="2_nst0a"]
+
+[node name="Pistol" type="Node2D"]
+script = ExtResource("1_aop3h")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = -1.5708
+texture = ExtResource("1_fypko")
+region_enabled = true
+region_rect = Rect2(768, 588, 58, 117)
+
+[node name="Butt" type="Marker2D" parent="."]
+position = Vector2(-60, 0)
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(60, 0)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_nst0a")
+volume_db = -20.0
+max_distance = 3000.0
+max_polyphony = 10
+panning_strength = 2.0
+bus = &"Pistol"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

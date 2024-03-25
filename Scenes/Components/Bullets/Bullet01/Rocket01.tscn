@@ -110,8 +110,11 @@ material = SubResource("CanvasItemMaterial_10xtf")
 scale = Vector2(1e-05, 1e-05)
 texture = ExtResource("4_jky6y")
 
+[node name="OffscreenTimer" type="Timer" parent="."]
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="area_entered" from="LockonZone" to="." method="_on_lockon_zone_area_entered"]
 [connection signal="body_entered" from="LockonZone" to="." method="_on_lockon_zone_body_entered"]
+[connection signal="timeout" from="OffscreenTimer" to="." method="_on_offscreen_timer_timeout"]

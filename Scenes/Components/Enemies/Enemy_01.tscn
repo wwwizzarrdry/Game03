@@ -98,9 +98,9 @@ radius = 381.084
 [sub_resource type="CircleShape2D" id="CircleShape2D_dfk8w"]
 radius = 664.091
 
-[node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
+[node name="Enemy" type="CharacterBody2D" groups=["enemy", "minimap_objects"]]
 collision_layer = 2
-collision_mask = 14
+collision_mask = 8
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_itmeb")
@@ -116,7 +116,6 @@ autoplay = "Enemy_Idle"
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_postprocessing = 1
-avoidance_enabled = true
 max_speed = 300.0
 debug_enabled = true
 debug_path_custom_line_width = 4.0

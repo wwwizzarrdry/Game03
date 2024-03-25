@@ -1,6 +1,6 @@
 class_name Enemy extends CharacterBody2D
 
-@export var speed: float = 100.0
+@export var speed: float = 300.0
 @export var health:float = 50.0 : set = set_health, get = get_health
 func set_health(val: float) -> void:
 	health = val
@@ -20,18 +20,22 @@ func get_shield() -> float:
 @onready var chasing: Sprite2D = $UI/Chasing
 @onready var searching: Sprite2D = $UI/Searching
 
+var minimap_icon = "mob"
 
-
-var max_speed: float = 300.00
+var min_speed: float = 100.00
+var max_speed: float = 400.00
 var acceleration: float = 7.0
 var max_health: float = 100.0
 var max_shield: float = 100.0
 
+var spawner: Marker2D
 var patrol_points: Array = []
 var current_patrol_point: int = 0
 var home_position: Vector2 = Vector2.ZERO
 var target_node = null
 var target_pos: Vector2 = Vector2.ZERO
+var center: Vector2 = Vector2.ZERO
+var radius: float = 0.0
 
 var is_dead: bool = false
 var is_chasing_player: bool = false
@@ -58,6 +62,8 @@ func _ready() -> void:
 	home_position = self.global_position
 	animation_player.play("Enemy_Idle")
 	calculate_patrol_points()
+	set_next_patrol_target()
+
 
 func _physics_process(delta: float) -> void:
 
@@ -70,7 +76,7 @@ func _physics_process(delta: float) -> void:
 		searching.visible = false
 
 	else:
-		speed = 100
+		speed = min_speed
 		chasing.visible = false
 		searching.visible = true
 
@@ -85,7 +91,17 @@ func _physics_process(delta: float) -> void:
 
 
 func calculate_patrol_points() -> void:
-	pass
+	var points_count = 180
+	var home_position_angle = atan2(home_position.y - center.y, home_position.x - center.x)
+	var previous_angle = 0
+	for i in range(points_count):
+		var angle = i * 2.0 * PI / points_count
+		var point = Vector2(cos(angle), sin(angle)) * radius + center
+		if home_position_angle > previous_angle and home_position_angle < angle:
+			patrol_points.push_back(home_position)
+			current_patrol_point = i
+		patrol_points.push_back(point)
+		previous_angle = angle
 
 func set_next_patrol_target():
 	if is_chasing_player:
@@ -99,6 +115,7 @@ func set_next_patrol_target():
 	else:
 		nav_agent.set_target_position(home_position)
 
+
 func recalc_path():
 	if is_dead:
 		return
@@ -108,11 +125,13 @@ func recalc_path():
 		nav_agent.target_position = target_node.global_position
 	else:
 		is_chasing_player = false
-		#nav_agent.target_position = patrol_points[current_patrol_point]
-		nav_agent.target_position = home_position
+		nav_agent.target_position = patrol_points[current_patrol_point]
+		#nav_agent.target_position = home_position
+
 
 func _on_recalculate_timer_timeout() -> void:
 	recalc_path()
+
 
 func take_damage(data):
 	if is_dead:
@@ -130,11 +149,15 @@ func take_damage(data):
 
 	if get_health() <= 0:
 		is_dead = true
+		Signals.minimap_object_removed.emit(self)
+		Signals.enemy_died.emit(self)
+		
 		explosion_material = load("res://Shaders/Burn_Dissolve_Material.tres").duplicate()
 		sprite.set_material(explosion_material)
 		sprite.material.set_shader_parameter("dissolve_value", 1.0);
 		tween.tween_method(set_shader_explosion_progress, 1.0, 0.0, 0.5);
 		tween.tween_callback(remove)
+		
 	elif get_shield() > 0:
 		# Update the shield intensity
 		sprite.material.set_shader_parameter("shield_value", get_shield()/max_shield)
@@ -150,7 +173,7 @@ func set_shader_flash_intensity(value: float):
 	sprite.material.set_shader_parameter("flash_intensity", value);
 
 func set_shader_explosion_progress(value: float):
-	print(value)
+	#print(value)
 	sprite.material.set_shader_parameter("dissolve_value", value);
 
 func remove() -> void:
