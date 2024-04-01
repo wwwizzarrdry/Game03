@@ -38,6 +38,7 @@ signal leave(player_num)
 		shield = value
 
 @onready var ray_cast_2d: RayCast2D = $RayCast2D
+@onready var pistol = $BodyParts/Weapons/Pistol
 
 var INPUT
 var max_speed: float = 500.0
@@ -72,21 +73,22 @@ func _ready() -> void:
 	print("Player %s Data:\n%s" % [player_id, PlayerManager.get_player_data(player_id)])
 	pass
 
-func _process(delta):
-	# Handle movement and look direction
-	set_move_direction(delta)
-	set_look_direction(delta)
-	
+func _process(_delta):
 	# Focused Aim
 	if INPUT.is_action_pressed("aim"):
 		is_aiming = true
+		pistol.bullet_type = 1
 		self.modulate = Color(1.0, 0.3, 0.3, 1.0)
 	if INPUT.is_action_just_released("aim"):
 		is_aiming = false
+		pistol.bullet_type = 0
 		self.modulate = Color(1.0, 1.0, 1.0, 1.0)
 	
+	if INPUT.is_action_just_released("X"):
+		pistol.reload()
+	
 	if INPUT.is_action_pressed("shoot"):
-		$BodyParts/Weapons/Pistol.shoot()
+		pistol.shoot()
 	
 	# let the player leave by pressing the "join" button
 	# this will need to be moved to the Pause menu as a menu option
@@ -95,8 +97,10 @@ func _process(delta):
 		Signals.minimap_object_removed.emit(self)
 		self.leave.emit(player_id)
 
-func _physics_process(_delta: float) -> void:
-	pass
+func _physics_process(delta: float) -> void:
+	# Handle movement and look direction
+	set_move_direction(delta)
+	set_look_direction(delta)
 
 func set_move_direction(delta: float) -> void:
 	var move_speed := speed

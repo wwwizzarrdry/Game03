@@ -1,12 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgv28vulacp7o"]
+[gd_scene load_steps=4 format=3 uid="uid://bgv28vulacp7o"]
 
 [ext_resource type="Script" path="res://Scenes/Components/EnemySpawner/enemy_spawner.gd" id="1_hb6yb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o0ciq"]
+radius = 1000.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_kulpo"]
 font_size = 42
 
-[node name="EnemySpawner" type="Marker2D"]
+[node name="EnemySpawner" type="Marker2D" groups=["defrost"]]
 script = ExtResource("1_hb6yb")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_o0ciq")
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 5.0

@@ -6,12 +6,14 @@ class_name WorldCamera extends Camera2D
 @export var max_zoom_in := 0.5  # camera won't zoom farther than this
 @export var margin := Vector2(600, 600)  # include some buffer area around targets
 
+@onready var main = $".."
 @onready var screen_size := get_viewport_rect().size
 
 var targets: Array = []
 var cam_rect := Rect2()
 
 func _ready():
+	main.debug_mode.connect(_on_debug_mode_changed)
 	Signals.tilemap_complete.connect(_on_tilemap_complete)
 	set_camera_limits()
 	
@@ -142,3 +144,7 @@ func distance_to_furthest_node_from_target(target_node) -> float:
 
 func _on_tilemap_complete():
 	set_camera_limits()
+
+func _on_debug_mode_changed(value):
+	prints("World Camera is Current: ", is_current(), value)
+	pass

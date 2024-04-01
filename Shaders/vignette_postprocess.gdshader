@@ -3,7 +3,6 @@ shader_type canvas_item;
 uniform float vignette_intensity = 0.4;
 uniform float vignette_opacity : hint_range(0.0, 1.0) = 0.5;
 uniform vec4 vignette_rgb : source_color = vec4(0.0, 0.0, 0.0, 1.0);
-
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 
 float vignette(vec2 uv){

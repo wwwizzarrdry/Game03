@@ -1,10 +1,11 @@
 extends Area2D
 
-@export var damage := 25.0
+@export var damage := 30.0
 @export var speed := 350.0
 @export var lifetime := 5.0
 @onready var smoketrail = $Smoketrail
 
+var minimap_icon = "rocket"
 var max_speed := 50.0
 var direction := Vector2.ZERO
 var is_dead := false
@@ -15,6 +16,7 @@ func _ready() -> void:
 	$Timer.wait_time = lifetime
 	smoketrail.lifetime[0] = lifetime
 	smoketrail.lifetime[1] = lifetime + 1.0
+	Signals.minimap_object_created.emit(self)
 
 func _process(delta):
 	if !is_dead:
@@ -26,6 +28,8 @@ func _process(delta):
 			transform.x = lerp(transform.x.rotated(randf_range(-0.1, 0.1)), global_position.direction_to(target.global_position), 0.05)
 		else:
 			transform.x = transform.x.rotated(randf_range(-0.15, 0.15))
+			
+		rotation = transform.x.angle()
 		$Sprite2D.rotation = lerp_angle(rotation, transform.x.angle(), delta)
 
 # Start tracking if enters anyones area
@@ -63,6 +67,7 @@ func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 func remove():
 	is_dead = true
 	speed = 0.0
+	Signals.minimap_object_removed.emit(self)
 	if is_instance_valid(smoketrail):
 		smoketrail.stop()
 	queue_free()

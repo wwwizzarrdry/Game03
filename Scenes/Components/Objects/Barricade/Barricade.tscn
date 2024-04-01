@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0r2ny"]
 size = Vector2(124, 130)
 
-[node name="StaticBody2D" type="StaticBody2D" groups=["minimap_objects"]]
+[node name="StaticBody2D" type="StaticBody2D" groups=["defrost", "minimap_objects"]]
 collision_layer = 4
 collision_mask = 31
 script = ExtResource("1_iorq0")

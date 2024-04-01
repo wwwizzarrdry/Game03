@@ -1,11 +1,12 @@
 extends Area2D
 
-@export var damage := 10.0
+@export var damage := 15.0
 @export var speed := 500.0
 @export var lifetime := 3.0
 
 @onready var smoketrail = $Smoketrail
 
+var minimap_icon = "bullet"
 var projectile_owner = null
 var max_speed := 1000
 var is_dead := false
@@ -14,7 +15,8 @@ func _ready() -> void:
 	$Timer.wait_time = lifetime
 	smoketrail.lifetime[0] = lifetime
 	smoketrail.lifetime[1] = lifetime + 1.0
-
+	Signals.minimap_object_created.emit(self)
+	
 func _process(_delta):
 	if !is_dead:
 		var new_speed = clamp(speed + 100, speed, max_speed)
@@ -36,6 +38,7 @@ func _on_body_entered(body: Node2D) -> void:
 func remove():
 	is_dead = true
 	speed = 0.0
+	Signals.minimap_object_removed.emit(self)
 	if is_instance_valid(smoketrail):
 		smoketrail.stop()
 	queue_free()

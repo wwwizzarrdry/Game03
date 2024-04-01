@@ -4,6 +4,7 @@ uniform sampler2D dissolve_texture : source_color;
 uniform float dissolve_value : hint_range(0,1) = 1.0;
 uniform float burn_size: hint_range(0.0, 1.0, 0.01) = 0.25;
 uniform vec4 burn_color: source_color = vec4(1.965, 1.09, 1.043, 1.0);
+uniform vec4 main_color: source_color = vec4(0.0, 0.0, 0.0, 1.0);
 
 void fragment(){
     vec4 main_texture = texture(TEXTURE, UV);
@@ -16,5 +17,5 @@ void fragment(){
 	float border = smoothstep(noise_texture.x, noise_texture.x + burn_size_step, dissolve_value);
 
 	COLOR.a *= threshold;
-	COLOR.rgb = mix(burn_color.rgb, main_texture.rgb, border);
+	COLOR.rgb = mix(burn_color.rgb, main_color.rgb, border);
 }

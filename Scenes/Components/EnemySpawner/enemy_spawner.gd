@@ -2,12 +2,14 @@ extends Marker2D
 
 @onready var origin = Vector2(-1000, 1000)
 
-var max_enemies = 3
+var max_enemies = 0
 var enemies = []
 var total_killed: int = 0
 var enemies_node: Node2D
 
 func _ready():
+	Signals.tilemap_complete.connect(_on_tilemap_complete)
+	Signals.tilemap_regenerate.connect(_on_tilemap_regenerate)
 	Signals.enemy_died.connect(_on_enemy_died)
 	enemies_node = get_node("/root/Main/Enemies")
 	$SpawnTimer.start()
@@ -38,6 +40,14 @@ func spawn_enemy():
 	enemies_node.add_child(enemy)
 	enemies.push_back(enemy)
 	Signals.enemy_created.emit(enemy)
+
+func _on_tilemap_complete():
+	$SpawnTimer.start()
+
+func _on_tilemap_regenerate():
+	total_killed = 0
+	enemies.clear()
+	$SpawnTimer.stop()
 
 func _on_enemy_died(body):
 	total_killed += 1

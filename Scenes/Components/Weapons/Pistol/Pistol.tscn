@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dgfc7ahpqb6vj"]
+[gd_scene load_steps=5 format=3 uid="uid://dgfc7ahpqb6vj"]
 
 [ext_resource type="Script" path="res://Scenes/Components/Weapons/Pistol/pistol.gd" id="1_aop3h"]
 [ext_resource type="Texture2D" uid="uid://c6odx3fi8jcbr" path="res://Scenes/Components/Weapons/Pistol/Pistol_Texture.tres" id="1_fypko"]
 [ext_resource type="AudioStream" uid="uid://ddrhif4s6882f" path="res://Assets/Audio/Gun_Sound_Effects/pistol.wav" id="2_nst0a"]
+[ext_resource type="AudioStream" uid="uid://dwu4vp88ekp08" path="res://Assets/Audio/Gun_Sound_Effects/outofammo.wav" id="4_2j56h"]
 
 [node name="Pistol" type="Node2D"]
 script = ExtResource("1_aop3h")
@@ -27,8 +28,12 @@ max_polyphony = 10
 panning_strength = 2.0
 bus = &"Pistol"
 
+[node name="EmptyMag" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_2j56h")
+volume_db = -20.0
+
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
+one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 

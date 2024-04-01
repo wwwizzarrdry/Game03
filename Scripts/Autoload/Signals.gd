@@ -14,5 +14,7 @@ signal enemy_created(object)
 signal enemy_died(object)
 
 # Map Signals
+signal tilemap_regenerate
 signal tilemap_complete
+signal minimap_object_created
 signal minimap_object_removed

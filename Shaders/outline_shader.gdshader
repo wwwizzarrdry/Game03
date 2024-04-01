@@ -8,7 +8,6 @@ uniform vec4 outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform int pixel_size : hint_range(1, 10) = 4;
 uniform float width_speed :hint_range(0.0, 10) = 1;
 
-
 void fragment(){
 	if(on==true){
 		float _width = width + ((sin(TIME*width_speed) + 1.0f) -2.0f) * 10.0f;
@@ -24,7 +23,13 @@ void fragment(){
 					if (Smooth) {
 						pixel_color.a += outline_color.a / (pow(x,2)+pow(y,2)) * (1.0-pow(2.0, -_width));
 						if (pixel_color.a > 1.0) {
-							pixel_color.a = 1.0;}} else {pixel_color.a = outline_color.a;}}}}
+							pixel_color.a = 1.0;}} else {pixel_color.a = outline_color.a;
+						}
+					}
+				}
+			}
 		COLOR = pixel_color;
-	}else{COLOR = texture(TEXTURE, UV);}
+	} else{
+		COLOR = texture(TEXTURE, UV);
 	}
+}

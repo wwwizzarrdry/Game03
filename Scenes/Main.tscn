@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://c6bgypvyikk1l"]
+[gd_scene load_steps=25 format=3 uid="uid://c6bgypvyikk1l"]
 
 [ext_resource type="Script" path="res://Scenes/main.gd" id="1_652n4"]
 [ext_resource type="Texture2D" uid="uid://blga5im05mvyx" path="res://Assets/Images/Textures/moon_light.png" id="2_kx5ak"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://tp5lqm4nserc" path="res://Assets/Images/Tilesets/tileset-terrain-basic.png" id="4_wbw5s"]
 [ext_resource type="Texture2D" uid="uid://r5wyh1mlseeu" path="res://Assets/Images/Tilesets/giant-plants.png" id="5_as7w3"]
 [ext_resource type="Script" path="res://Scenes/Levels/Island/island.gd" id="6_y6k54"]
+[ext_resource type="Texture2D" uid="uid://cgyc2xu6trkat" path="res://Assets/Images/Sprites/Projectiles/Bullet_Red.png" id="7_0bex3"]
 [ext_resource type="PackedScene" uid="uid://bgv28vulacp7o" path="res://Scenes/Components/EnemySpawner/EnemySpawner.tscn" id="7_aemlg"]
 [ext_resource type="PackedScene" uid="uid://crv5x8iaw7j6w" path="res://Scenes/Components/Objects/Barricade/Barricade.tscn" id="9_vy744"]
 
@@ -433,59 +434,80 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="HUD/Control"]
+[node name="Minimap" parent="HUD/Control" node_paths=PackedStringArray("camera") instance=ExtResource("3_uude8")]
+visible = false
 layout_mode = 0
-offset_left = 197.0
-offset_top = 6.0
-offset_right = 494.0
-offset_bottom = 195.0
+offset_right = 300.0
+offset_bottom = 300.0
+camera = NodePath("../../../WorldCamera")
+
+[node name="LevelAdminPanel" type="ColorRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 299.0
+offset_right = 290.0
+offset_bottom = 496.0
 color = Color(0.101961, 0.101961, 0.101961, 0.682353)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Control/LevelAdminPanel"]
 layout_mode = 0
-offset_left = 211.0
-offset_top = 16.0
-offset_right = 480.0
-offset_bottom = 55.0
-theme_override_constants/separation = 20
+offset_left = 4.0
+offset_top = 8.0
+offset_right = 277.0
+offset_bottom = 195.0
 
-[node name="Button" type="Button" parent="HUD/Control/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/Control/LevelAdminPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
+
+[node name="Noise" type="TextureRect" parent="HUD/Control/LevelAdminPanel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("2_xwsd4")
+
+[node name="Gradient" type="TextureRect" parent="HUD/Control/LevelAdminPanel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("2_xwsd4")
+
+[node name="Button" type="Button" parent="HUD/Control/LevelAdminPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 53)
 layout_mode = 2
 text = "RANDOMIZE"
 
-[node name="Noise" type="TextureRect" parent="HUD/Control"]
-layout_mode = 0
-offset_left = 213.0
-offset_top = 55.0
-offset_right = 469.0
-offset_bottom = 311.0
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_xwsd4")
-
-[node name="Gradient" type="TextureRect" parent="HUD/Control"]
-layout_mode = 0
-offset_left = 350.0
-offset_top = 55.0
-offset_right = 606.0
-offset_bottom = 311.0
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_xwsd4")
-
-[node name="Minimap" parent="HUD/Control" node_paths=PackedStringArray("camera") instance=ExtResource("3_uude8")]
-layout_mode = 0
-camera = NodePath("../../../WorldCamera")
-
 [node name="Level" type="Node2D" parent="."]
-
-[node name="EnemySpawner" parent="Level" instance=ExtResource("7_aemlg")]
+show_behind_parent = true
 
 [node name="Island" type="TileMap" parent="Level"]
-show_behind_parent = true
 z_index = -1
 tile_set = SubResource("TileSet_t28ur")
 format = 2
 layer_1/tile_data = PackedInt32Array()
 script = ExtResource("6_y6k54")
+noise_debug = true
+
+[node name="Center" type="Marker2D" parent="Level/Island" groups=["minimap_objects"]]
+z_index = 2
+metadata/minimap_icon = "res://Assets/Images/Sprites/Objects/keys/19.png"
+metadata/minimap_icon_name = "cog"
+
+[node name="Sprite2D" type="Sprite2D" parent="Level/Island/Center"]
+texture = ExtResource("7_0bex3")
+
+[node name="Fog" type="Node2D" parent="Level/Island"]
+z_index = 20
+
+[node name="Center" parent="Level" instance=ExtResource("9_vy744")]
+rotation = -1.5708
+
+[node name="EnemySpawner" parent="Level" instance=ExtResource("7_aemlg")]
+
+[node name="Projectiles" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Players" type="Node2D" parent="."]
 
 [node name="Environment" type="Node2D" parent="."]
 
@@ -513,39 +535,12 @@ texture = ExtResource("2_kx5ak")
 texture_scale = 6.0
 height = 1000.0
 
-[node name="Projectiles" type="Node2D" parent="."]
-
-[node name="StaticBody2D" parent="Projectiles" instance=ExtResource("9_vy744")]
-position = Vector2(1348, -227)
-rotation = -1.5708
-
-[node name="StaticBody2D2" parent="Projectiles" instance=ExtResource("9_vy744")]
-position = Vector2(-672, -1092)
-rotation = -1.5708
-
-[node name="StaticBody2D3" parent="Projectiles" instance=ExtResource("9_vy744")]
-position = Vector2(-1691, 333)
-rotation = -1.5708
-
-[node name="StaticBody2D4" parent="Projectiles" instance=ExtResource("9_vy744")]
-position = Vector2(-572, 369)
-rotation = -1.5708
-
-[node name="StaticBody2D5" parent="Projectiles" instance=ExtResource("9_vy744")]
-position = Vector2(896, 875)
-rotation = -1.5708
-
-[node name="Enemies" type="Node2D" parent="."]
-
-[node name="Players" type="Node2D" parent="."]
-
 [node name="WorldCamera" parent="." instance=ExtResource("3_o821m")]
 unique_name_in_owner = true
-enabled = true
 limit_smoothed = true
 editor_draw_drag_margin = true
 zoom_speed = 2.0
 max_zoom_out = 2.0
 max_zoom_in = 0.3
 
-[connection signal="pressed" from="HUD/Control/VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="HUD/Control/LevelAdminPanel/VBoxContainer/Button" to="." method="_on_button_pressed"]

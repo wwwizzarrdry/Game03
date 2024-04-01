@@ -1,5 +1,7 @@
 extends Node2D
 
+signal debug_mode(value)
+
 @export var debug := false :
 	get:
 		return debug
@@ -8,6 +10,10 @@ extends Node2D
 
 @onready var default_font: FontVariation = preload("res://Assets/Fonts/roboto.tres")
 @onready var world_camera = %WorldCamera as WorldCamera
+@onready var fog = $Level/Island/Fog
+@onready var players_container = $Players
+@onready var enemies_container = $Enemies
+
 #@onready var color_rect: ColorRect = $Level/Dancefloor/ColorRect
 
 
@@ -19,14 +25,13 @@ var max_distance_radius: float = max_player_separation_distance / 2
 var max_distance_alpha: float = 0.0 
 var player_count: int = 0
 
-func _ready():
+func _ready():    
+	Signals.tilemap_complete.connect(_on_tilemap_complete)
+	Signals.tilemap_regenerate.connect(_on_tilemap_regenerate)
 	player_manager.player_joined.connect(spawn_player)
 	player_manager.player_left.connect(delete_player)
-	
 	#color_rect.position = Vector2(-5000,-5000)
 	#dancefloor_material = color_rect.get_material()
-	
-	pass
 
 func _process(delta):
 	player_manager.handle_join_input()
@@ -38,7 +43,12 @@ func _process(delta):
 		apply_tether_force(delta)
 		queue_redraw()
 
-
+func _input(_event):
+	if Input.is_action_just_pressed("debug_mode"):
+		debug = !debug
+		fog.visible = !debug
+		self.debug_mode.emit(debug)
+		
 
 # Drawing
 func _draw():
@@ -89,6 +99,30 @@ func clear_dancefloor(_player_num):
 	#update_dancefloor()
 	pass
 
+# Tilemap State
+func _on_tilemap_regenerate():
+	for p in player_nodes:
+		# remove camera targets
+		world_camera.remove_target(player_nodes[p])
+		# remove players
+		players_container.remove_child(player_nodes[p])
+	world_camera.global_position = Vector2.ZERO
+	player_count = player_manager.get_player_count()
+	
+	# remove enemies
+	for enemy in enemies_container.get_children():
+		enemy.destroy()
+
+func _on_tilemap_complete():
+	for p in player_nodes:
+		# respawn players
+		player_nodes[p].position = Vector2(randf_range(-150, 150), randf_range(-150, 150))
+		players_container.add_child(player_nodes[p])
+		# add camera targets
+		world_camera.add_target(player_nodes[p])
+		player_count = player_manager.get_player_count()
+		player_manager.player_created.emit(player_nodes[p].player_id, player_nodes[p])
+
 
 # Player Join/Leave
 func spawn_player(player_num: int):
@@ -104,7 +138,7 @@ func spawn_player(player_num: int):
 	player_manager.player_created.emit(player_num, player_node)
 	
 	# 3. add the player to the tree
-	$Players.add_child(player_node)
+	players_container.add_child(player_node)
 	
 	# 4. random spawn position
 	player_node.position = Vector2(randf_range(50, 400), randf_range(50, 400))
@@ -166,13 +200,4 @@ func get_remaining_distance_to_edge(center, target):
 
 func _on_button_pressed():
 	$Level/Island.world_seed = randi_range(1, 100000)
-	ToastParty.show({
-		"text": "World Seed: " + str($Level/Island.world_seed), # Text (emojis can be used)
-		"bgcolor": Color(0, 0, 0, 0.7),     # Background Color
-		"color": Color(1, 1, 1, 1),         # Text Color
-		"gravity": "top",                   # top or bottom
-		"direction": "right",               # left or center or right
-		"text_size": 32,                    # [optional] Text (font) size // experimental (warning!)
-		"use_font": false                    # [optional] Use custom ToastParty font // experimental (warning!)
-	})
 	$Level/Island.generate_world()

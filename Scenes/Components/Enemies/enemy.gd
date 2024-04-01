@@ -151,7 +151,6 @@ func take_damage(data):
 		is_dead = true
 		Signals.minimap_object_removed.emit(self)
 		Signals.enemy_died.emit(self)
-		
 		explosion_material = load("res://Shaders/Burn_Dissolve_Material.tres").duplicate()
 		sprite.set_material(explosion_material)
 		sprite.material.set_shader_parameter("dissolve_value", 1.0);
@@ -176,8 +175,16 @@ func set_shader_explosion_progress(value: float):
 	#print(value)
 	sprite.material.set_shader_parameter("dissolve_value", value);
 
+func destroy():
+	is_dead = true
+	Signals.minimap_object_removed.emit(self)
+	Signals.enemy_died.emit(self)
+	remove()
+
 func remove() -> void:
-	if is_inside_tree(): self.queue_free()
+	if is_inside_tree():
+		get_parent().remove_child(self)
+		queue_free()
 
 # Signals
 func _on_navigation_agent_2d_velocity_computed(safe_velocity: Vector2) -> void:
