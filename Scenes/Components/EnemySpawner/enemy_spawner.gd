@@ -2,7 +2,7 @@ extends Marker2D
 
 @onready var origin = Vector2(-1000, 1000)
 
-var max_enemies = 0
+var max_enemies = 3
 var enemies = []
 var total_killed: int = 0
 var enemies_node: Node2D

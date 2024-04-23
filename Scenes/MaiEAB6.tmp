@@ -5,8 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://b7s24020eylj1" path="res://Assets/Images/Textures/square.png" id="2_xwsd4"]
 [ext_resource type="PackedScene" uid="uid://cki2wldsblsad" path="res://Scenes/Components/WorldCamera/WorldCamera.tscn" id="3_o821m"]
 [ext_resource type="PackedScene" uid="uid://cnsplfxva07w0" path="res://Scenes/Components/MiniMap/MiniMap.tscn" id="3_uude8"]
-[ext_resource type="PackedScene" uid="uid://c3d2gkjdccfll" path="res://Scenes/Levels/Island/island.tscn" id="4_kk7xg"]
 [ext_resource type="PackedScene" uid="uid://bgv28vulacp7o" path="res://Scenes/Components/EnemySpawner/EnemySpawner.tscn" id="7_aemlg"]
+[ext_resource type="PackedScene" uid="uid://lu83232l4mkg" path="res://Scenes/Levels/Dancefloor/dance_floor.tscn" id="8_y6pt1"]
 [ext_resource type="PackedScene" uid="uid://crv5x8iaw7j6w" path="res://Scenes/Components/Objects/Barricade/Barricade.tscn" id="9_vy744"]
 
 [sub_resource type="Environment" id="Environment_c5eys"]
@@ -23,7 +23,6 @@ adjustment_enabled = true
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_652n4")
-debug = true
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -81,7 +80,7 @@ text = "RANDOMIZE"
 [node name="Level" type="Node2D" parent="."]
 show_behind_parent = true
 
-[node name="Island" parent="Level" instance=ExtResource("4_kk7xg")]
+[node name="Dancefloor" parent="Level" instance=ExtResource("8_y6pt1")]
 
 [node name="Center" parent="Level" instance=ExtResource("9_vy744")]
 rotation = -1.5708
